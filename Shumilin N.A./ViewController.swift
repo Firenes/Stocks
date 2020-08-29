@@ -20,6 +20,10 @@ class ViewController: UIViewController {
     
     // MARK: UI
     @IBOutlet weak var companyNameLabel: UILabel!
+    @IBOutlet weak var symbolLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var priceChangeLabel: UILabel!
+    
     @IBOutlet weak var companyPickerView: UIPickerView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
@@ -68,12 +72,18 @@ extension ViewController {
             
             guard
                 let json = jsonObject as? [String: Any],
-                let companyName = json["companyName"] as? String
+                let companyName = json["companyName"] as? String,
+                let symbol = json["symbol"] as? String,
+                let price = json["latestPrice"] as? Double,
+                let priceChange = json["change"] as? Double
             else { return print("Invalid JSON") }
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.displayStockInfo(companyName: companyName)
+                self.displayStockInfo(companyName: companyName,
+                                      symbol: symbol,
+                                      price: price,
+                                      priceChange: priceChange)
             }
             
             print("Company name is: " + companyName)
@@ -82,14 +92,23 @@ extension ViewController {
         }
     }
     
-    private func displayStockInfo(companyName: String) {
+    private func displayStockInfo(companyName: String,
+                                  symbol: String,
+                                  price: Double,
+                                  priceChange: Double) {
         activityIndicator.stopAnimating()
         companyNameLabel.text = companyName
+        symbolLabel.text = symbol
+        priceLabel.text = "\(price)"
+        priceChangeLabel.text = "\(priceChange)"
     }
     
     private func requestQuoteUpdate() {
         activityIndicator.startAnimating()
         companyNameLabel.text = "-"
+        symbolLabel.text = "-"
+        priceLabel.text = "-"
+        priceChangeLabel.text = "-"
         
         let selectedRow = companyPickerView.selectedRow(inComponent: 0)
         let selectedSymbol = Array(companies.values)[selectedRow]
