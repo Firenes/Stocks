@@ -10,9 +10,16 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    // MARK: - UI
+    @IBOutlet weak var companyNameLabel: UILabel!
+    @IBOutlet weak var companyPickerView: UIPickerView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        companyNameLabel.text = "Tinkoff"
     }
 
 
