@@ -32,8 +32,10 @@ class ViewController: UIViewController {
         companyPickerView.delegate = self
         
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.startAnimating()
-        requestQuote(for: "AAPL")
+//        activityIndicator.startAnimating()
+//        requestQuote(for: "AAPL")
+        
+        requestQuoteUpdate()
     }
 }
 
@@ -84,6 +86,15 @@ extension ViewController {
         activityIndicator.stopAnimating()
         companyNameLabel.text = companyName
     }
+    
+    private func requestQuoteUpdate() {
+        activityIndicator.startAnimating()
+        companyNameLabel.text = "-"
+        
+        let selectedRow = companyPickerView.selectedRow(inComponent: 0)
+        let selectedSymbol = Array(companies.values)[selectedRow]
+        requestQuote(for: selectedSymbol)
+    }
 }
 
 // MARK: - UIPickerViewDataSource
@@ -97,8 +108,13 @@ extension ViewController: UIPickerViewDataSource {
     }
 }
 
+// MARK: - UIPickerViewDelegate
 extension ViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return Array(companies.keys)[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        requestQuoteUpdate()
     }
 }
