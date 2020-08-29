@@ -11,25 +11,78 @@ import UIKit
 class ViewController: UIViewController {
 
     private let companies = [
-        "Apple": "APPL",
+        "Apple": "AAPL",
         "Microsoft": "MSFT",
         "Google": "GOOG",
         "Amazon": "AMZN",
         "Facebook": "FB"
     ]
     
-    // MARK: - UI
+    // MARK: UI
     @IBOutlet weak var companyNameLabel: UILabel!
     @IBOutlet weak var companyPickerView: UIPickerView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    // MARK: - LifeCycle
+    // MARK: LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         companyNameLabel.text = "Tinkoff"
         companyPickerView.dataSource = self
         companyPickerView.delegate = self
+        
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+        requestQuote(for: "AAPL")
+    }
+}
+
+// MARK: - Private Methods
+extension ViewController {
+    private func requestQuote(for symbol: String) {
+        let token = "pk_8e1b66cb02504229a49c6c710a9a5c25"
+        guard let url = URL(string: "https://cloud.iexapis.com/stable/stock/\(symbol)/quote?token=\(token)") else {
+            print("Invalid url")
+            return
+        }
+        let dataTask = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
+            guard let self = self else { return }
+            if let data = data,
+                (response as? HTTPURLResponse)?.statusCode == 200,
+                error == nil {
+//                print(data)
+                self.parseQuote(from: data)
+            } else {
+                print("Network error!")
+            }
+        }
+        
+        dataTask.resume()
+    }
+    
+    private func parseQuote(from data: Data) {
+        do {
+            let jsonObject = try JSONSerialization.jsonObject(with: data)
+            
+            guard
+                let json = jsonObject as? [String: Any],
+                let companyName = json["companyName"] as? String
+            else { return print("Invalid JSON") }
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.displayStockInfo(companyName: companyName)
+            }
+            
+            print("Company name is: " + companyName)
+        } catch {
+            print("JSON parsing error: " + error.localizedDescription)
+        }
+    }
+    
+    private func displayStockInfo(companyName: String) {
+        activityIndicator.stopAnimating()
+        companyNameLabel.text = companyName
     }
 }
 
