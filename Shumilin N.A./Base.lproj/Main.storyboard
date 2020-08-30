@@ -92,14 +92,9 @@
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="agA-Vc-460">
                                 <rect key="frame" x="0.0" y="593" width="414" height="269"/>
                             </pickerView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="rbH-Yx-WQS">
-                                <rect key="frame" x="197" y="438" width="20" height="20"/>
-                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="rbH-Yx-WQS" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="4FZ-l6-7MZ"/>
-                            <constraint firstItem="rbH-Yx-WQS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5SM-3s-4Uk"/>
                             <constraint firstItem="agA-Vc-460" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="CSl-E3-4Tz"/>
                             <constraint firstItem="agA-Vc-460" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Yvv-U2-ztR"/>
                             <constraint firstItem="aA7-eq-cbN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="40" id="ac2-vz-Ydd"/>
@@ -111,7 +106,6 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="activityIndicator" destination="rbH-Yx-WQS" id="JAA-kT-GLs"/>
                         <outlet property="companyNameLabel" destination="9dn-XS-oN3" id="O4t-54-kYO"/>
                         <outlet property="companyPickerView" destination="agA-Vc-460" id="q2s-dS-dBG"/>
                         <outlet property="priceChangeLabel" destination="thF-bj-25Q" id="4FR-N7-yf6"/>

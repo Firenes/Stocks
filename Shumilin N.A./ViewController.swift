@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     
     // MARK: UI
     let disconnectVC = DisconnectViewController()
+    let spinnerVC = SpinnerViewController()
     
     @IBOutlet weak var companyNameLabel: UILabel!
     @IBOutlet weak var symbolLabel: UILabel!
@@ -23,16 +24,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var priceChangeLabel: UILabel!
     
     @IBOutlet weak var companyPickerView: UIPickerView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         disconnectVC.delegate = self
         
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.startAnimating()
+        self.add(child: spinnerVC, to: self.view)
         
         requestCompanies()
     }
@@ -45,12 +43,17 @@ extension ViewController {
             guard let self = self else { return }
             guard let unwrapCompanies = companies else {
                 print("Sorry there are no companies data")
+                DispatchQueue.main.async {
+                    self.remove(child: self.spinnerVC)
+                    self.add(child: self.disconnectVC, to: self.view)
+                }
                 return
             }
             self.companies = unwrapCompanies
             
             DispatchQueue.main.async {
                 self.remove(child: self.disconnectVC)
+                self.remove(child: self.spinnerVC)
                 self.requestQuoteUpdate()
                 
                 self.companyPickerView.dataSource = self
@@ -91,7 +94,7 @@ extension ViewController {
                                   symbol: String,
                                   price: Double,
                                   priceChange: Double) {
-        activityIndicator.stopAnimating()
+        self.remove(child: spinnerVC)
         companyNameLabel.text = companyName
         symbolLabel.text = symbol
         priceLabel.text = "\(price) $"
@@ -99,7 +102,7 @@ extension ViewController {
     }
     
     private func requestQuoteUpdate() {
-        activityIndicator.startAnimating()
+        self.add(child: spinnerVC, to: self.view)
         companyNameLabel.text = "-"
         symbolLabel.text = "-"
         priceLabel.text = "-"
@@ -140,6 +143,7 @@ extension ViewController: UIPickerViewDelegate {
 extension ViewController: DisconnectViewControllerDelegate {
     func reconnectToServer() {
         print("reconnectToServer")
+        disconnectVC.add(child: spinnerVC, to: disconnectVC.view)
         requestCompanies()
     }
 }
