@@ -16,7 +16,8 @@ class SpinnerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = UIColor.init(white: 0, alpha: 0.15)
+//        self.view.backgroundColor = UIColor.init(white: 0, alpha: 0.15)
+        self.view.backgroundColor = .white
 
         setConstraints()
         configureSpinner()
