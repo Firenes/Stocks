@@ -9,24 +9,48 @@
 import Foundation
 
 class NetworkService {
-    func request(urlString: String, completion: @escaping (Result<Data, Error>) -> Void) {
+    func request(urlString: String, completion: @escaping (Result<Data, NetworkError>) -> Void) {
         guard let url = URL(string: urlString) else {
             print("Failed URL")
             return
         }
         
         let dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let error = error {
-                completion(.failure(error))
+            if let _ = error {
+                completion(.failure(.requestProblem))
                 return
             }
             
-            if let data = data,
-                (response as? HTTPURLResponse)?.statusCode == 200 {
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode else {
+                completion(.failure(.responseProblem))
+                return
+            }
+            
+            if statusCode != 200 {
+                let responseCheck = self.responseCheck(statusCode: statusCode)
+                completion(.failure(responseCheck))
+            }
+            
+            if let data = data {
                 completion(.success(data))
             }
         }
         
         dataTask.resume()
+    }
+    
+    private func responseCheck(statusCode: Int) -> NetworkError {
+        switch statusCode {
+        case 400:
+            return .requestProblem
+        case 401..<404:
+            return .badURL
+        case 404:
+            return .notFound
+        case 500:
+            return .serverProblem
+        default:
+            return .unknownError
+        }
     }
 }
