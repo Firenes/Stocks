@@ -26,10 +26,10 @@
                                     <constraint firstAttribute="height" constant="90" id="dgA-Qk-dWB"/>
                                 </constraints>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="aA7-eq-cbN">
-                                <rect key="frame" x="40" y="214" width="334" height="202"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="48" translatesAutoresizingMaskIntoConstraints="NO" id="aA7-eq-cbN">
+                                <rect key="frame" x="40" y="214" width="334" height="226"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="UCO-LP-6yV">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="UCO-LP-6yV">
                                         <rect key="frame" x="0.0" y="0.0" width="334" height="20.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Company Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8z1-K9-9E9">
@@ -47,7 +47,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Ds5-SH-msY">
-                                        <rect key="frame" x="0.0" y="60.5" width="334" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="68.5" width="334" height="20.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Symbol" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MWi-xf-HVw">
                                                 <rect key="frame" x="0.0" y="0.0" width="163" height="20.5"/>
@@ -64,7 +64,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="hnu-kt-Fwv">
-                                        <rect key="frame" x="0.0" y="121" width="334" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="137" width="334" height="20.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yLy-PX-AYr">
                                                 <rect key="frame" x="0.0" y="0.0" width="163" height="20.5"/>
@@ -81,7 +81,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="mwN-k9-nNZ">
-                                        <rect key="frame" x="0.0" y="181.5" width="334" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="205.5" width="334" height="20.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price change" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qSj-Bd-2zW">
                                                 <rect key="frame" x="0.0" y="0.0" width="163" height="20.5"/>

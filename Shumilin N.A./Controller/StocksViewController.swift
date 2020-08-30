@@ -83,11 +83,12 @@ extension StocksViewController {
             }
             
             DispatchQueue.main.async {
-                self.remove(child: self.disconnectVC)
                 self.displayStockInfo(companyName: companyName,
                                       symbol: symbol,
                                       price: price,
                                       priceChange: priceChange)
+                self.remove(child: self.disconnectVC)
+                self.remove(child: self.spinnerVC)
             }
         }
     }
@@ -96,7 +97,6 @@ extension StocksViewController {
                                   symbol: String,
                                   price: Double,
                                   priceChange: Double) {
-        self.remove(child: spinnerVC)
         companyNameLabel.text = companyName
         symbolLabel.text = symbol
         priceLabel.text = "\(price) $"
@@ -114,11 +114,13 @@ extension StocksViewController {
         
         priceChangeLabel.textColor = .black
         
+        logoImageView.image = nil
+        
         let selectedRow = companyPickerView.selectedRow(inComponent: 0)
         if !companies.isEmpty {
             guard let selectedSymbol = companies[selectedRow].symbol else { return }
-            self.requestQuote(for: selectedSymbol)
             self.requestLogo(for: selectedSymbol)
+            self.requestQuote(for: selectedSymbol)
         } else {
             print("Companies are empty")
         }
@@ -133,7 +135,7 @@ extension StocksViewController {
         if priceChange == 0.0 {
             return .black
         }
-        return priceChange > 0 ? .green : .red
+        return priceChange > 0 ? Colors.green.value : .red
     }
 }
 
