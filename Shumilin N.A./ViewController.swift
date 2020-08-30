@@ -101,6 +101,8 @@ extension ViewController {
         symbolLabel.text = symbol
         priceLabel.text = "\(price) $"
         priceChangeLabel.text = "\(priceChange) $"
+        
+        priceChangeLabel.textColor = self.setColor(priceChange: priceChange)
     }
     
     private func requestQuoteUpdate() {
@@ -109,6 +111,8 @@ extension ViewController {
         symbolLabel.text = "-"
         priceLabel.text = "-"
         priceChangeLabel.text = "-"
+        
+        priceChangeLabel.textColor = .black
         
         let selectedRow = companyPickerView.selectedRow(inComponent: 0)
         if !companies.isEmpty {
@@ -123,6 +127,13 @@ extension ViewController {
     private func requestLogo(for symbol: String) {
         let imageURL = "\(API.imageURL)/\(symbol).png"
         self.logoImageView.download(imageURL: imageURL)
+    }
+    
+    private func setColor(priceChange: Double) -> UIColor {
+        if priceChange == 0.0 {
+            return .black
+        }
+        return priceChange > 0 ? .green : .red
     }
 }
 
