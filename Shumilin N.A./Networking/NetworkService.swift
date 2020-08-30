@@ -12,6 +12,7 @@ class NetworkService {
     func request(urlString: String, completion: @escaping (Result<Data, NetworkError>) -> Void) {
         guard let url = URL(string: urlString) else {
             print("Failed URL")
+            completion(.failure(.badURL))
             return
         }
         
@@ -29,6 +30,7 @@ class NetworkService {
             if statusCode != 200 {
                 let responseCheck = self.responseCheck(statusCode: statusCode)
                 completion(.failure(responseCheck))
+                return
             }
             
             if let data = data {
