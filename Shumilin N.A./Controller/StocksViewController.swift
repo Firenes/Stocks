@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  StocksViewController.swift
 //  Shumilin N.A.
 //
 //  Created by Nikita Shumilin on 29.08.2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class StocksViewController: UIViewController {
 
     let networkFetcher = NetworkDataFetcher()
     
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
 }
 
 // MARK: - Private Methods
-extension ViewController {
+extension StocksViewController {
     private func requestCompanies() {
         networkFetcher.fetchCompanies(limit: "100") { [weak self] (companies) in
             guard let self = self else { return }
@@ -138,7 +138,7 @@ extension ViewController {
 }
 
 // MARK: - UIPickerViewDataSource
-extension ViewController: UIPickerViewDataSource {
+extension StocksViewController: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -149,7 +149,7 @@ extension ViewController: UIPickerViewDataSource {
 }
 
 // MARK: - UIPickerViewDelegate
-extension ViewController: UIPickerViewDelegate {
+extension StocksViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return companies[row].companyName
     }
@@ -159,7 +159,7 @@ extension ViewController: UIPickerViewDelegate {
     }
 }
 
-extension ViewController: DisconnectViewControllerDelegate {
+extension StocksViewController: DisconnectViewControllerDelegate {
     func reconnectToServer() {
         print("reconnectToServer")
         disconnectVC.add(child: spinnerVC, to: disconnectVC.view)
