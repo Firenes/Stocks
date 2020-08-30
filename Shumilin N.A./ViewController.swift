@@ -85,8 +85,8 @@ extension ViewController {
         activityIndicator.stopAnimating()
         companyNameLabel.text = companyName
         symbolLabel.text = symbol
-        priceLabel.text = "\(price)"
-        priceChangeLabel.text = "\(priceChange)"
+        priceLabel.text = "\(price) $"
+        priceChangeLabel.text = "\(priceChange) $"
     }
     
     private func requestQuoteUpdate() {
