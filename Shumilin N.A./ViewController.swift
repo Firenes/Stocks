@@ -10,13 +10,9 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    private let companies = [
-        "Apple": "AAPL",
-        "Microsoft": "MSFT",
-        "Google": "GOOG",
-        "Amazon": "AMZN",
-        "Facebook": "FB"
-    ]
+    let networkFetcher = NetworkDataFetcher()
+    
+    private var companies = [Companies]()
     
     // MARK: UI
     @IBOutlet weak var companyNameLabel: UILabel!
@@ -31,64 +27,54 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        companyNameLabel.text = "Tinkoff"
-        companyPickerView.dataSource = self
-        companyPickerView.delegate = self
-        
         activityIndicator.hidesWhenStopped = true
-//        activityIndicator.startAnimating()
-//        requestQuote(for: "AAPL")
+        activityIndicator.startAnimating()
         
-        requestQuoteUpdate()
+        requestCompanies()
     }
 }
 
 // MARK: - Private Methods
 extension ViewController {
-    private func requestQuote(for symbol: String) {
-        let token = "pk_8e1b66cb02504229a49c6c710a9a5c25"
-        guard let url = URL(string: "https://cloud.iexapis.com/stable/stock/\(symbol)/quote?token=\(token)") else {
-            print("Invalid url")
-            return
-        }
-        let dataTask = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
+    private func requestCompanies() {
+        networkFetcher.fetchCompanies(limit: "100") { [weak self] (companies) in
             guard let self = self else { return }
-            if let data = data,
-                (response as? HTTPURLResponse)?.statusCode == 200,
-                error == nil {
-//                print(data)
-                self.parseQuote(from: data)
-            } else {
-                print("Network error!")
+            guard let unwrapCompanies = companies else {
+                print("Sorry there are no companies data")
+                return
+            }
+            self.companies = unwrapCompanies
+            
+            DispatchQueue.main.async {
+                self.requestQuoteUpdate()
+                
+                self.companyPickerView.dataSource = self
+                self.companyPickerView.delegate = self
             }
         }
-        
-        dataTask.resume()
     }
     
-    private func parseQuote(from data: Data) {
-        do {
-            let jsonObject = try JSONSerialization.jsonObject(with: data)
+    private func requestQuote(for symbol: String) {
+        networkFetcher.fetchQuotes(symbol: symbol) { [weak self] (quote) in
+            guard let self = self else { return }
             
             guard
-                let json = jsonObject as? [String: Any],
-                let companyName = json["companyName"] as? String,
-                let symbol = json["symbol"] as? String,
-                let price = json["latestPrice"] as? Double,
-                let priceChange = json["change"] as? Double
-            else { return print("Invalid JSON") }
+                let unwrQuote = quote,
+                let companyName = unwrQuote.companyName,
+                let symbol = unwrQuote.symbol,
+                let price = unwrQuote.price,
+                let priceChange = unwrQuote.priceChange
+            else {
+                print("Sorry there are no quote data")
+                return
+            }
             
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
+            DispatchQueue.main.async {
                 self.displayStockInfo(companyName: companyName,
                                       symbol: symbol,
                                       price: price,
                                       priceChange: priceChange)
             }
-            
-            print("Company name is: " + companyName)
-        } catch {
-            print("JSON parsing error: " + error.localizedDescription)
         }
     }
     
@@ -111,8 +97,12 @@ extension ViewController {
         priceChangeLabel.text = "-"
         
         let selectedRow = companyPickerView.selectedRow(inComponent: 0)
-        let selectedSymbol = Array(companies.values)[selectedRow]
-        requestQuote(for: selectedSymbol)
+        if !companies.isEmpty {
+            guard let selectedSymbol = companies[selectedRow].symbol else { return }
+            self.requestQuote(for: selectedSymbol)
+        } else {
+            print("Companies are empty")
+        }
     }
 }
 
@@ -123,14 +113,14 @@ extension ViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return companies.keys.count
+        return companies.count
     }
 }
 
 // MARK: - UIPickerViewDelegate
 extension ViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return Array(companies.keys)[row]
+        return companies[row].companyName
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

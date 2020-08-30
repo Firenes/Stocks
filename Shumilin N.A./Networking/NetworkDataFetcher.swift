@@ -11,6 +11,7 @@ import Foundation
 class NetworkDataFetcher {
     let networkService = NetworkService()
     
+    // MAX LIMIT –– 3155
     func fetchCompanies(limit: String, response: @escaping ([Companies]?) -> Void) {
         let urlString = "\(API.baseURL)/stock/market/list/mostactive?listLimit=\(limit)&token=\(API.token)"
         
@@ -32,7 +33,7 @@ class NetworkDataFetcher {
     }
     
     func fetchQuotes(symbol: String, response: @escaping (Quotes?) -> Void) {
-        let urlString = "\(API.baseURL)/stocks/\(symbol)/quote?=token=\(API.token)"
+        let urlString = "\(API.baseURL)/stock/\(symbol)/quote?token=\(API.token)"
         
         networkService.request(urlString: urlString) { (result) in
             switch result {
