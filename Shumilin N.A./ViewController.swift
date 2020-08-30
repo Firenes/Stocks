@@ -18,6 +18,8 @@ class ViewController: UIViewController {
     let disconnectVC = DisconnectViewController()
     let spinnerVC = SpinnerViewController()
     
+    @IBOutlet weak var logoImageView: UIImageView!
+    
     @IBOutlet weak var companyNameLabel: UILabel!
     @IBOutlet weak var symbolLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
@@ -112,9 +114,15 @@ extension ViewController {
         if !companies.isEmpty {
             guard let selectedSymbol = companies[selectedRow].symbol else { return }
             self.requestQuote(for: selectedSymbol)
+            self.requestLogo(for: selectedSymbol)
         } else {
             print("Companies are empty")
         }
+    }
+    
+    private func requestLogo(for symbol: String) {
+        let imageURL = "\(API.imageURL)/\(symbol).png"
+        self.logoImageView.download(imageURL: imageURL)
     }
 }
 
