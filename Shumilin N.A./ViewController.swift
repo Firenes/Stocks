@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     private var companies = [Companies]()
     
     // MARK: UI
+    let disconnectVC = DisconnectViewController()
+    
     @IBOutlet weak var companyNameLabel: UILabel!
     @IBOutlet weak var symbolLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
@@ -26,6 +28,8 @@ class ViewController: UIViewController {
     // MARK: LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        disconnectVC.delegate = self
         
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
@@ -46,6 +50,7 @@ extension ViewController {
             self.companies = unwrapCompanies
             
             DispatchQueue.main.async {
+                self.remove(child: self.disconnectVC)
                 self.requestQuoteUpdate()
                 
                 self.companyPickerView.dataSource = self
@@ -66,10 +71,14 @@ extension ViewController {
                 let priceChange = unwrQuote.priceChange
             else {
                 print("Sorry there are no quote data")
+                DispatchQueue.main.async {
+                    self.add(child: self.disconnectVC, to: self.view)
+                }
                 return
             }
             
             DispatchQueue.main.async {
+                self.remove(child: self.disconnectVC)
                 self.displayStockInfo(companyName: companyName,
                                       symbol: symbol,
                                       price: price,
@@ -125,5 +134,12 @@ extension ViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         requestQuoteUpdate()
+    }
+}
+
+extension ViewController: DisconnectViewControllerDelegate {
+    func reconnectToServer() {
+        print("reconnectToServer")
+        requestCompanies()
     }
 }
