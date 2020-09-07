@@ -1,6 +1,6 @@
 //
-//  Companies.swift
-//  Shumilin N.A.
+//  Quotes.swift
+//  Stocks
 //
 //  Created by Nikita Shumilin on 29.08.2020.
 //  Copyright © 2020 Nikita Shumilin. All rights reserved.
@@ -8,15 +8,19 @@
 
 import Foundation
 
-struct Companies {
+struct Quotes {
     var companyName: String?
     var symbol: String?
+    var price: Double?
+    var priceChange: Double?
 }
 
-extension Companies: Codable {
+extension Quotes: Codable {
     enum CodingKeys: String, CodingKey {
         case companyName
         case symbol
+        case price = "latestPrice"
+        case priceChange = "change"
     }
     
     func encode(to encoder: Encoder) throws {
@@ -24,6 +28,8 @@ extension Companies: Codable {
         
         try container.encode(companyName, forKey: .companyName)
         try container.encode(symbol, forKey: .symbol)
+        try container.encode(price, forKey: .price)
+        try container.encode(priceChange, forKey: .priceChange)
     }
     
     init(from decoder: Decoder) throws {
@@ -31,5 +37,7 @@ extension Companies: Codable {
         
         companyName = try? container.decode(String.self, forKey: .companyName)
         symbol = try? container.decode(String.self, forKey: .symbol)
+        price = try? container.decode(Double.self, forKey: .price)
+        priceChange = try? container.decode(Double.self, forKey: .priceChange)
     }
 }

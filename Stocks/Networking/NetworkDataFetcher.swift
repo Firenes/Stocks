@@ -1,6 +1,6 @@
 //
 //  NetworkDataFetcher.swift
-//  Shumilin N.A.
+//  Stocks
 //
 //  Created by Nikita Shumilin on 29.08.2020.
 //  Copyright © 2020 Nikita Shumilin. All rights reserved.
